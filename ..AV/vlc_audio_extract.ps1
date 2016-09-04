@@ -1,3 +1,5 @@
+# Uses vlc to extract the audio track from a video and saves it as a Ogg Vorbis file
+
 $outputExtension = ".ogg"
    $bitrate = 128
    $channels = 2
