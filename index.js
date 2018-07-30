@@ -1,6 +1,19 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var path = require('path')
+var fs = require('fs');
 var app = express();
+
+//create array of images
+const imageDir = path.resolve(__dirname, './images/')
+  var images = [];
+  fs.readdir(imageDir, (err, files) => {
+    files.forEach(file => {
+      if (file.indexOf('.jpg') != -1) {
+        images.push(file);
+      }
+    });
+  });
 
 app.use(bodyParser.json());
 
@@ -74,9 +87,20 @@ for (var i = 0;i < table.values.length; i++) {
   decreaser += 1000000
 }
 
+//serve static files from images dir
+app.use("/images", express.static(imageDir));
+
 app.all('/', function(req, res) {
   setCORSHeaders(res);
   res.send('ok');
+  res.end();
+});
+
+app.all('/randomimage', function(req, res) {
+  setCORSHeaders(res);
+
+  let item = images[Math.floor(Math.random()*images.length)];
+  res.send(item);
   res.end();
 });
 
